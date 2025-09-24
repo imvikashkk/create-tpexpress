@@ -8,3 +8,4 @@ templates/*/.git
 docs
 .gitignore
 package-lock.json
+node_modules
