@@ -1,0 +1,10 @@
+templates/*/package-lock.json
+templates/*/dist
+templates/*/node_modules
+templates/*/.git
+
+.git
+.vscode
+docs
+.gitignore
+package-lock.json

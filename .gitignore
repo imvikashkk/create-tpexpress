@@ -1,0 +1,7 @@
+node_modules
+templates/*/node_modules
+templates/*/dist
+templates/*/package-lock.json
+templates/*/.git
+templates/*/.env
+templates/*/.gitignore

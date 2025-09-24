@@ -1,0 +1,14 @@
+#!/usr/bin/env sh
+
+# Exit immediately if a command exits with a non-zero status.
+
+set -e
+
+# Run the 'postpublish' script defined in package.json
+
+# This is a common practice to prepare files before publishing a package.
+
+echo "Running postpublish script..."
+npm run postpublish
+
+echo "Post-commit checks passed successfully!"

@@ -1,0 +1,52 @@
+{
+  "name": "create-tpexpress",
+  "version": "1.0.0",
+  "description": "The fastest way to scaffold a modern TypeScript + Node.js + Express.js project with ESLint, TSX and more! Visit: https://tpexpress.vercel.app",
+  "main": "app.js",
+  "type": "module",
+  "bin": {
+    "create-tpexpress": "./app.js"
+  },
+  "scripts": {
+    "prepublishOnly": "node scripts/pre-publish.js",
+    "postpublish": "node scripts/post-publish.js",
+    "prepare": "husky"
+  },
+  "keywords": [
+    "typescript",
+    "nodejs",
+    "scaffold",
+    "cli",
+    "template",
+    "generator",
+    "expressjs",
+    "eslint",
+    "tsx",
+    "create",
+    "boilerplate",
+    "starter"
+  ],
+  "author": "Vikash KK <hello@vikashkk.com>",
+  "license": "MIT",
+  "homepage": "https://tpexpress.vercel.app",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/imvikashkk/create-tpexpress.git"
+  },
+  "bugs": {
+    "url": "https://github.com/imvikashkk/create-tpexpress/issues"
+  },
+  "engines": {
+    "node": ">=22.19.0",
+    "npm": ">=10.9.3"
+  },
+  "files": [
+    "app.js",
+    "templates/",
+    "README.md",
+    "LICENSE"
+  ],
+  "devDependencies": {
+    "husky": "^9.1.7"
+  }
+}

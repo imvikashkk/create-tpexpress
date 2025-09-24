@@ -1,0 +1,17 @@
+npm test
+#!/usr/bin/env sh
+
+# Exit immediately if a command exits with a non-zero status.
+
+set -e
+
+# Run the 'prepublishOnly' script defined in package.json
+
+# This is a common practice to prepare files before publishing a package.
+
+echo "Running prepublishOnly script..."
+npm run prepublishOnly
+git add templates/*/env.template
+git add templates/*/gitignore.template
+
+echo "Post-commit checks passed successfully!"

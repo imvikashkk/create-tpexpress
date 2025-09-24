@@ -1,0 +1,23 @@
+{
+  // =================================================================
+  //  📦 RECOMMENDED EXTENSIONS
+  //  Extensions required for this VS Code configuration
+  // =================================================================
+  "recommendations": [
+    "esbenp.prettier-vscode", // Code formatter for JavaScript, TypeScript, HTML, CSS
+    "pkief.material-icon-theme", // Material Design icons for file explorer
+    "ritwickdey.liveserver", // Launch local development server with live reload
+    "formulahendry.auto-rename-tag", // Automatically rename paired HTML/XML tags
+    "github.copilot", // AI-powered code completion and suggestions
+    "bradlc.vscode-tailwindcss", // IntelliSense for Tailwind CSS classes
+    "wayou.vscode-todo-highlight", // Highlight TODO, FIXME, NOTE comments in code
+    "hoovercj.vscode-power-mode", // Fun typing effects (flames, explosions, screen shake)
+    "prisma.prisma" // Language support for Prisma schema files
+  ],
+
+  // =================================================================
+  //  🚫 UNWANTED RECOMMENDATIONS
+  //  Extensions to exclude from workspace recommendations
+  // =================================================================
+  "unwantedRecommendations": []
+}

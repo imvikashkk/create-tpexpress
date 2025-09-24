@@ -1,0 +1,17 @@
+{
+  "folders": [
+	{
+		"path": "../../../../drizzle"
+	},
+	{
+		"path": "../../../../postgres"
+	},
+	{
+		"path": "../../../../prisma"
+	},
+	{
+		"path": "../../.."
+	}
+],
+  "settings": {}
+}

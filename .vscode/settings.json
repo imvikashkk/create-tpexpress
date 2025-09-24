@@ -1,0 +1,206 @@
+{
+  // =================================================================
+  //  ✅ USER INTERFACE & WORKBENCH
+  //  Settings that control the editor's look, feel, and layout.
+  // =================================================================
+
+  "workbench.iconTheme": "material-icon-theme",
+  "workbench.preferredHighContrastColorTheme": "Red",
+  "workbench.preferredHighContrastLightColorTheme": "Red",
+  "workbench.preferredLightColorTheme": "Visual Studio Dark",
+  "workbench.panel.opensMaximized": "never",
+  "workbench.settings.useSplitJSON": true,
+  "breadcrumbs.enabled": true,
+
+  // =================================================================
+  //  ✅ EDITOR: BEHAVIOR & APPEARANCE
+  //  How the editor will look and behave while writing code.
+  // =================================================================
+
+  "editor.fontFamily": "'Cascadia Code', 'Fira Code'",
+  "editor.fontLigatures": true,
+  "editor.wordWrap": "on",
+  "editor.mouseWheelZoom": true,
+  "editor.minimap.enabled": false,
+  "editor.accessibilitySupport": "off",
+  "editor.cursorBlinking": "expand",
+  "editor.cursorWidth": 2,
+  "diffEditor.ignoreTrimWhitespace": false,
+  "diffEditor.hideUnchangedRegions.enabled": true,
+  "editor.bracketPairColorization.enabled": true,
+  "editor.guides.bracketPairs": "active",
+  "editor.renderWhitespace": "boundary",
+  "editor.smoothScrolling": true,
+
+  // =================================================================
+  //  ✅ CODE FORMATTING & SAVING
+  //  To make the code beautiful and consistent.
+  // =================================================================
+
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.formatOnSave": true,
+  "prettier.bracketSameLine": true,
+  "files.autoSave": "onFocusChange",
+  "prettier.singleQuote": true,
+
+  // =================================================================
+  //  ✅ FILE EXPLORER & MANAGEMENT
+  //  For managing files and folders.
+  // =================================================================
+
+  "explorer.confirmDelete": false,
+  "explorer.confirmDragAndDrop": false,
+  "javascript.updateImportsOnFileMove.enabled": "always",
+  "files.watcherExclude": {
+    "**/.git/objects/**": true,
+    "**/.git/subtree-cache/**": true,
+    "**/node_modules/*/**": true,
+    "**/.hg/store/**": true
+  },
+  "search.exclude": {
+    "**/node_modules": true,
+    "**/bower_components": true,
+    "**/*.code-search": true,
+    "**/dist": true,
+    "**/build": true
+  },
+
+  "files.associations": {
+    "*.ejs": "html",
+    "*.js": "javascript",
+    "*.ts": "typescript"
+  },
+
+  // =================================================================
+  //  ✅ LANGUAGE SPECIFIC SETTINGS
+  //  Settings for different programming languages.
+  // =================================================================
+
+  // --- JavaScript & TypeScript ---
+  "javascript.preferences.quoteStyle": "single",
+  "typescript.preferences.quoteStyle": "single",
+  "javascript.preferences.importModuleSpecifier": "non-relative",
+  "typescript.preferences.importModuleSpecifier": "non-relative",
+  "javascript.preferences.importModuleSpecifierEnding": "js",
+  "typescript.preferences.importModuleSpecifierEnding": "js",
+
+  "[javascript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[typescript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[html]": {
+    "editor.defaultFormatter": "vscode.html-language-features"
+  },
+  "[prisma]": {
+    "editor.defaultFormatter": "Prisma.prisma"
+  },
+
+  // =================================================================
+  //  ✅ INTEGRATED TERMINAL
+  //  Terminal Setting of vscode
+  // =================================================================
+
+  "terminal.integrated.cursorBlinking": true,
+  "terminal.integrated.cursorStyle": "line",
+  "terminal.integrated.cursorWidth": 2,
+  "terminal.integrated.altClickMovesCursor": false,
+  "terminal.integrated.fontFamily": "monospace",
+
+  // =================================================================
+  //  ✅ EXTENSION SETTINGS
+  //  Installed Extension's Settings
+  // =================================================================
+
+  "liveServer.settings.donotVerifyTags": true,
+  "liveServer.settings.donotShowInfoMsg": true,
+
+  "emmet.triggerExpansionOnTab": true,
+
+  "auto-rename-tag.activationOnLanguage": ["html"],
+
+  "github.copilot.editor.enableAutoCompletions": true,
+
+  "material-icon-theme.languages.associations": {
+    "ejs": "html",
+    "prisma": "prisma",
+    "jsonc": "json"
+  },
+
+  "tailwindCSS.includeLanguages": {
+    "javascript": "javascript",
+    "typescript": "typescript",
+    "html": "HTML"
+  },
+
+  "todohighlight.keywords": [
+    {
+      "text": "TODO:",
+      "color": "#444",
+      "backgroundColor": "#FF8C00"
+    },
+    {
+      "text": "FIXME:",
+      "color": "white",
+      "backgroundColor": "#ff0000"
+    },
+    {
+      "text": "NOTE:",
+      "color": "#000",
+      "backgroundColor": "#00ff00"
+    }
+  ],
+
+  "powermode.enabled": true,
+  "powermode.presets": "flames",
+  "powermode.combo.counterEnabled": "hide",
+  "powermode.combo.location": "off",
+  "powermode.shake.intensity": 1,
+
+  // =================================================================
+  //  ✅ TERMINAL & UI COLORS
+  //  Your terminal's colors, these have been placed in a separate section.
+  // =================================================================
+
+  "workbench.colorCustomizations": {
+    "terminal.background": "#000000",
+    "terminal.foreground": "#2bad00",
+    "terminal.ansiBlack": "#111111",
+    "terminal.ansiBrightBlack": "#665C54",
+    "terminal.ansiBrightBlue": "#0D6678",
+    "terminal.ansiBrightCyan": "#8BA59B",
+    "terminal.ansiBrightGreen": "#7e0202",
+    "terminal.ansiBrightMagenta": "#8F4673",
+    "terminal.ansiBrightRed": "#ad3e30",
+    "terminal.ansiBrightWhite": "#a0a800",
+    "terminal.ansiBrightYellow": "#002afe",
+    "terminal.ansiBlue": "#00a1f9",
+    "terminal.ansiCyan": "#8BA59B",
+    "terminal.ansiGreen": "#95C085",
+    "terminal.ansiMagenta": "#dc058a",
+    "terminal.ansiRed": "#ff1e00",
+    "terminal.ansiWhite": "#A89984",
+    "terminal.ansiYellow": "#ffdd00"
+  },
+
+  // =================================================================
+  //  ✅ MISCELLANEOUS
+  //  Remaining other settings.
+  // =================================================================
+  "css.lint.unknownAtRules": "ignore",
+  "typescript.updateImportsOnFileMove.enabled": "always",
+  "editor.quickSuggestions": {
+    "other": true,
+    "comments": false,
+    "strings": true
+  },
+  "emmet.showExpandedAbbreviation": "always",
+  "editor.snippetSuggestions": "top",
+  "editor.inlineSuggest.enabled": true,
+  "editor.suggest.preview": true,
+  "editor.suggest.showInlineDetails": true,
+  "editor.inlineSuggest.showToolbar": "onHover",
+  "editor.suggest.showStatusBar": true,
+  "editor.acceptSuggestionOnEnter": "smart"
+}
