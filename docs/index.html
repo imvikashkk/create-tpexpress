@@ -1,0 +1,1621 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TpExpress - Modern TypeScript Express Boilerplate</title>
+    <meta name="description"
+        content="The fastest way to scaffold a modern TypeScript + Node.js + Express.js project. Production-ready boilerplate with batteries included.">
+    <link rel="shortcut icon" href="favicon-32x32.png" type="image/png">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --bg-primary: #ffffff;
+            --bg-secondary: #f8fafc;
+            --bg-tertiary: #f1f5f9;
+            --bg-hover: #e2e8f0;
+            --text-primary: #1e293b;
+            --text-secondary: #475569;
+            --text-muted: #64748b;
+            --border-color: #e2e8f0;
+            --accent-primary: #3b82f6;
+            --accent-secondary: #8b5cf6;
+            --accent-gradient: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
+            --code-bg: #f8fafc;
+            --sidebar-bg: #fafbfc;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --error: #ef4444;
+            --shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+
+        [data-theme="dark"] {
+            --bg-primary: #0f172a;
+            --bg-secondary: #1e293b;
+            --bg-tertiary: #334155;
+            --bg-hover: #475569;
+            --text-primary: #f8fafc;
+            --text-secondary: #e2e8f0;
+            --text-muted: #94a3b8;
+            --border-color: #334155;
+            --accent-primary: #60a5fa;
+            --accent-secondary: #a78bfa;
+            --accent-gradient: linear-gradient(135deg, #60a5fa 0%, #a78bfa 100%);
+            --code-bg: #1e293b;
+            --sidebar-bg: #0f172a;
+            --success: #34d399;
+            --warning: #fbbf24;
+            --error: #f87171;
+            --shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.3), 0 1px 2px 0 rgba(0, 0, 0, 0.2);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.3), 0 4px 6px -2px rgba(0, 0, 0, 0.2);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            color: var(--text-primary);
+            background: var(--bg-primary);
+            transition: all 0.3s ease;
+        }
+
+        .container {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 64px;
+            background: var(--bg-primary);
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 2rem;
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            text-decoration: none;
+        }
+
+        .logo-icon {
+            width: 32px;
+            height: 32px;
+            background: var(--accent-gradient);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.2rem;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.05);
+            }
+        }
+
+        .header-controls {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .menu-toggle {
+            display: none;
+            background: none;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 0.5rem;
+            cursor: pointer;
+            color: var(--text-secondary);
+            transition: all 0.3s ease;
+        }
+
+        .menu-toggle:hover {
+            background: var(--bg-hover);
+            color: var(--text-primary);
+            transform: scale(1.05);
+        }
+
+        .theme-toggle {
+            background: none;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 0.5rem;
+            cursor: pointer;
+            color: var(--text-secondary);
+            transition: all 0.3s ease;
+        }
+
+        .theme-toggle:hover {
+            background: var(--bg-hover);
+            color: var(--text-primary);
+            transform: scale(1.05);
+        }
+
+        .github-btn {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            background: var(--text-primary);
+            color: var(--bg-primary);
+            text-decoration: none;
+            border-radius: 6px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .github-btn:hover {
+            opacity: 0.9;
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .sidebar {
+            position: fixed;
+            top: 64px;
+            left: 0;
+            width: 280px;
+            height: calc(100vh - 64px);
+            background: var(--sidebar-bg);
+            border-right: 1px solid var(--border-color);
+            overflow-y: auto;
+            padding: 2rem 0;
+            transition: transform 0.3s ease;
+            z-index: 999;
+        }
+
+        .sidebar.mobile-hidden {
+            transform: translateX(-100%);
+        }
+
+        .nav-section {
+            margin-bottom: 2rem;
+        }
+
+        .nav-title {
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-muted);
+            margin-bottom: 1rem;
+            padding: 0 2rem;
+        }
+
+        .nav-link {
+            display: block;
+            padding: 0.75rem 2rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            border-right: 2px solid transparent;
+        }
+
+        .nav-link:hover {
+            color: var(--text-primary);
+            background: var(--bg-hover);
+        }
+
+        .nav-link.active {
+            color: var(--accent-primary);
+            background: var(--bg-tertiary);
+            border-right-color: var(--accent-primary);
+            font-weight: 500;
+        }
+
+        .main {
+            flex: 1;
+            margin-left: 280px;
+            margin-top: 64px;
+            padding: 2rem;
+            max-width: calc(100vw - 280px);
+            transition: all 0.3s ease;
+        }
+
+        .main.expanded {
+            margin-left: 0;
+            max-width: 100vw;
+        }
+
+        .main-content {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .hero {
+            text-align: center;
+            padding: 4rem 0;
+            margin-bottom: 4rem;
+        }
+
+        .hero-title {
+            font-size: 4rem;
+            font-weight: 900;
+            margin-bottom: 1rem;
+            background: var(--accent-gradient);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            line-height: 1.1;
+            letter-spacing: -0.02em;
+        }
+
+        .hero-subtitle {
+            font-size: 1.375rem;
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            line-height: 1.5;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: 3rem;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.875rem 1.75rem;
+            border-radius: 8px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            border: 1px solid transparent;
+            font-size: 0.95rem;
+        }
+
+        .btn-primary {
+            background: var(--accent-gradient);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .btn-secondary {
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+            border-color: var(--border-color);
+        }
+
+        .btn-secondary:hover {
+            background: var(--bg-hover);
+            transform: translateY(-1px);
+        }
+
+        .code-block {
+            background: var(--code-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            overflow: hidden;
+            margin: 2rem 0;
+            box-shadow: var(--shadow);
+        }
+
+        .code-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1rem 1.5rem;
+            background: var(--bg-secondary);
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .code-title {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        .copy-btn {
+            background: none;
+            border: none;
+            padding: 0.5rem;
+            border-radius: 4px;
+            cursor: pointer;
+            color: var(--text-muted);
+            transition: all 0.3s ease;
+        }
+
+        .copy-btn:hover {
+            color: var(--text-primary);
+            background: var(--bg-hover);
+        }
+
+        .code-content {
+            padding: 1.5rem;
+            font-family: 'JetBrains Mono', 'Fira Code', monospace;
+            font-size: 0.9rem;
+            line-height: 1.6;
+            overflow-x: auto;
+        }
+
+        .code-content .command {
+            color: var(--accent-primary);
+            font-weight: 600;
+        }
+
+        .code-content .comment {
+            color: var(--text-muted);
+            font-style: italic;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 1.5rem;
+            margin: 3rem 0;
+        }
+
+        .feature-card {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 2rem;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: var(--accent-gradient);
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-lg);
+            border-color: var(--accent-primary);
+        }
+
+        .feature-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .feature-icon {
+            width: 56px;
+            height: 56px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.75rem;
+            margin-bottom: 1.25rem;
+            transition: transform 0.3s ease;
+        }
+
+        .feature-card:hover .feature-icon {
+            transform: scale(1.1);
+        }
+
+        .feature-icon.typescript {
+            background: linear-gradient(135deg, #3178c6, #5ba7f7);
+            color: white;
+        }
+
+        .feature-icon.database {
+            background: linear-gradient(135deg, #336791, #5ba7f7);
+            color: white;
+        }
+
+        .feature-icon.security {
+            background: linear-gradient(135deg, #10b981, #34d399);
+            color: white;
+        }
+
+        .feature-icon.performance {
+            background: linear-gradient(135deg, #f59e0b, #fbbf24);
+            color: white;
+        }
+
+        .feature-icon.tools {
+            background: linear-gradient(135deg, #8b5cf6, #a78bfa);
+            color: white;
+        }
+
+        .feature-icon.redis {
+            background: linear-gradient(135deg, #dc382d, #f87171);
+            color: white;
+        }
+
+        .feature-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 0.75rem;
+            color: var(--text-primary);
+        }
+
+        .feature-description {
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        .section {
+            margin-bottom: 5rem;
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+        }
+
+        .section-subtitle {
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+            font-size: 1.125rem;
+            line-height: 1.6;
+        }
+
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.375rem;
+            padding: 0.375rem 0.875rem;
+            background: var(--bg-tertiary);
+            color: var(--text-secondary);
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            margin: 0.25rem;
+            transition: all 0.3s ease;
+        }
+
+        .badge:hover {
+            background: var(--bg-hover);
+            color: var(--text-primary);
+            transform: translateY(-1px);
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 2rem;
+            margin: 4rem 0;
+        }
+
+        #stats,
+        #contributing,
+        #links,
+        #tech-stack,
+        #project-structure,
+        #scripts,
+        #dev-tools,
+        #core-tech,
+        #database,
+        #security,
+        #requirements,
+        #quick-start {
+            scroll-margin-top: 110px;
+        }
+
+        #introduction {
+            scroll-margin-top: 100px;
+        }
+
+        .stat {
+            text-align: center;
+            padding: 2rem;
+            background: var(--bg-secondary);
+            border-radius: 16px;
+            border: 1px solid var(--border-color);
+            transition: all 0.3s ease;
+        }
+
+        .stat:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow);
+        }
+
+        .stat-number {
+            font-size: 3rem;
+            font-weight: 900;
+            color: var(--accent-primary);
+            margin-bottom: 0.5rem;
+            line-height: 1;
+        }
+
+        .stat-label {
+            color: var(--text-secondary);
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .requirements-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 2rem 0;
+            background: var(--bg-secondary);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+        }
+
+        .requirements-table th,
+        .requirements-table td {
+            padding: 1rem 1.5rem;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .requirements-table th {
+            background: var(--bg-tertiary);
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .requirements-table td {
+            color: var(--text-secondary);
+        }
+
+        .requirements-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .db-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin: 3rem 0;
+        }
+
+        .db-option {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 1.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .db-option:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow);
+            border-color: var(--accent-primary);
+        }
+
+        .db-option-title {
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .db-option-description {
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+        }
+
+        .overlay {
+            display: none;
+            position: fixed;
+            top: 64px;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 998;
+        }
+
+        .overlay.show {
+            display: block;
+        }
+
+        @media (max-width: 1200px) {
+            .main {
+                max-width: calc(100vw - 280px);
+            }
+
+            .main-content {
+                max-width: 800px;
+            }
+
+            .hero-title {
+                font-size: 3.5rem;
+            }
+        }
+
+        @media (max-width: 1024px) {
+            .container {
+                flex-direction: column;
+            }
+
+            .sidebar {
+                transform: translateX(-100%);
+            }
+
+            .sidebar.show {
+                transform: translateX(0);
+            }
+
+            .main {
+                margin-left: 0;
+                max-width: 100vw;
+            }
+
+            .menu-toggle {
+                display: block;
+            }
+
+            .hero-title {
+                font-size: 3rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header {
+                padding: 0 1rem;
+            }
+
+            .main {
+                padding: 1rem;
+            }
+
+            .hero-title {
+                font-size: 2.5rem;
+            }
+
+            .hero-subtitle {
+                font-size: 1.125rem;
+            }
+
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .section-title {
+                font-size: 2rem;
+            }
+
+            .hero-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .github-btn span {
+                display: none;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .stats {
+                grid-template-columns: 1fr;
+            }
+
+            .hero-title {
+                font-size: 2rem;
+            }
+
+            .section-title {
+                font-size: 1.75rem;
+            }
+        }
+
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--bg-secondary);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--border-color);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--text-muted);
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .fade-in-up {
+            animation: fadeInUp 0.8s ease forwards;
+        }
+
+        .fade-in-left {
+            animation: fadeInLeft 0.8s ease forwards;
+        }
+    </style>
+</head>
+
+<body>
+    <header class="header">
+        <div style="display: flex; align-items: center; gap: 1rem;">
+            <button class="menu-toggle" onclick="toggleMenu()" aria-label="Toggle menu">
+                <i class="fas fa-bars"></i>
+            </button>
+            <a href="#" class="logo">
+                <div class="logo-icon">⚡</div>
+                <span>TpExpress</span>
+            </a>
+        </div>
+        <div class="header-controls">
+            <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">
+                <i class="fas fa-moon" id="theme-icon"></i>
+            </button>
+            <a href="https://github.com/imvikashkk/create-tpexpress" class="github-btn" target="_blank">
+                <i class="fab fa-github"></i>
+                <span>GitHub</span>
+            </a>
+        </div>
+    </header>
+    <div class="overlay" onclick="toggleMenu()"></div>
+    <div class="container">
+        <nav class="sidebar" id="sidebar">
+            <div class="nav-section">
+                <div class="nav-title">Getting Started</div>
+                <a href="#introduction" class="nav-link active" onclick="closeMobileMenu()">Introduction</a>
+                <a href="#quick-start" class="nav-link" onclick="closeMobileMenu()">Quick Start</a>
+                <a href="#requirements" class="nav-link" onclick="closeMobileMenu()">Requirements</a>
+            </div>
+            <div class="nav-section">
+                <div class="nav-title">Features</div>
+                <a href="#core-tech" class="nav-link" onclick="closeMobileMenu()">Core Technologies</a>
+                <a href="#database" class="nav-link" onclick="closeMobileMenu()">Database Options</a>
+                <a href="#security" class="nav-link" onclick="closeMobileMenu()">Security & Performance</a>
+                <a href="#dev-tools" class="nav-link" onclick="closeMobileMenu()">Environment Configuration</a>
+            </div>
+            <div class="nav-section">
+                <div class="nav-title">Configuration</div>
+                <a href="#scripts" class="nav-link" onclick="closeMobileMenu()">NPM Scripts</a>
+                <a href="#project-structure" class="nav-link" onclick="closeMobileMenu()">Project Structure</a>
+                <a href="#tech-stack" class="nav-link" onclick="closeMobileMenu()">Tech Stack</a>
+            </div>
+            <div class="nav-section">
+                <div class="nav-title">Resources</div>
+                <a href="#links" class="nav-link" onclick="closeMobileMenu()">Links & Resources</a>
+                <a href="#stats" class="nav-link" onclick="closeMobileMenu()">Stats</a>
+                <a href="#contributing" class="nav-link" onclick="closeMobileMenu()">Contributing</a>
+            </div>
+        </nav>
+        <main class="main" id="main">
+            <div class="main-content">
+                <div id="introduction" class="hero fade-in-up">
+                    <h1 class="hero-title">TpExpress</h1>
+                    <p class="hero-subtitle">The fastest way to scaffold a modern TypeScript + Eslint + Node.js +
+                        Express.js project. Production-ready boilerplate with batteries included and 4 database options
+                        to choose from.</p>
+                    <div class="hero-buttons">
+                        <a href="#quick-start" class="btn btn-primary">
+                            <i class="fas fa-rocket"></i>
+                            Get Started
+                        </a>
+                        <a href="https://www.npmjs.com/package/create-tpexpress" class="btn btn-secondary"
+                            target="_blank">
+                            <i class="fab fa-npm"></i>
+                            View on NPM
+                        </a>
+                    </div>
+                    <div class="code-block">
+                        <div class="code-header">
+                            <span class="code-title">Quick Installation</span>
+                            <button class="copy-btn" onclick="copyCode('install-cmd')">
+                                <i class="fas fa-copy"></i>
+                            </button>
+                        </div>
+                        <div class="code-content">
+                            <div id="install-cmd"><span class="command">npm create tpexpress</span></div>
+                        </div>
+                    </div>
+                </div>
+                <section id="quick-start" class="section fade-in-up">
+                    <h2 class="section-title">Quick Start Guide</h2>
+                    <p class="section-subtitle">Get up and running in minutes with these simple steps</p>
+                    <div class="code-block">
+                        <div class="code-header">
+                            <span class="code-title">Step 1: Create Project</span>
+                            <button class="copy-btn" onclick="copyCode('step1-cmd')">
+                                <i class="fas fa-copy"></i>
+                            </button>
+                        </div>
+                        <div class="code-content">
+                            <div id="step1-cmd"><span class="comment"># Create a new project</span> <br />
+                                <span class="command">npm create tpexpress my-awesome-project</span> <br />
+                                <span class="command">cd</span> my-awesome-project
+                            </div>
+                        </div>
+                    </div>
+                    <div class="code-block">
+                        <div class="code-header">
+                            <span class="code-title">Step 2: Development Mode</span>
+                            <button class="copy-btn" onclick="copyCode('step2-cmd')">
+                                <i class="fas fa-copy"></i>
+                            </button>
+                        </div>
+                        <div class="code-content">
+                            <div id="step2-cmd"><span class="comment"># Setup environment</span>
+                                <br />
+                                <span class="comment"># Start development server</span>
+                                <br />
+                                <span class="command">npm run dev</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="code-block">
+                        <div class="code-header">
+                            <span class="code-title">Step 3: Production Build</span>
+                            <button class="copy-btn" onclick="copyCode('step3-cmd')">
+                                <i class="fas fa-copy"></i>
+                            </button>
+                        </div>
+                        <div class="code-content">
+                            <div id="step3-cmd">
+                                <span class="comment"># Setup environment</span>
+                                <br>
+                                <span class="comment"># Build and start production server</span>
+                                <br>
+                                <span class="command">npm run build</span>
+                                <br>
+                                <span class="command">npm run start</span>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                <section id="requirements" class="section fade-in-left">
+                    <h2 class="section-title">System Requirements</h2>
+                    <p class="section-subtitle">Make sure you have these installed before getting started</p>
+                    <table class="requirements-table">
+                        <thead>
+                            <tr>
+                                <th>Requirement</th>
+                                <th>Version</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Node.js</strong></td>
+                                <td><code>v22.19.0+</code></td>
+                            </tr>
+                            <tr>
+                                <td><strong>npm</strong></td>
+                                <td><code>10.9.3+</code></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </section>
+                <section id="core-tech" class="section fade-in-up">
+                    <h2 class="section-title">Core Technologies</h2>
+                    <p class="section-subtitle">Everything you need to build modern, scalable web applications with
+                        TypeScript</p>
+                    <div class="features-grid">
+                        <div class="feature-card">
+                            <div class="feature-icon typescript">
+                                <i class="fab fa-js-square"></i>
+                            </div>
+                            <h3 class="feature-title">TypeScript First</h3>
+                            <p class="feature-description">Full TypeScript support with strict configuration, type
+                                safety, path mapping (@/ imports), and excellent developer experience out of the box.
+                            </p>
+                        </div>
+                        <div class="feature-card">
+                            <div class="feature-icon database">
+                                <i class="fas fa-database"></i>
+                            </div>
+                            <h3 class="feature-title">4 Database Options</h3>
+                            <p class="feature-description">Choose from Drizzle ORM, Mongoose ODM, Prisma ORM, or raw
+                                PostgreSQL. Each comes with proper setup and example implementations.</p>
+                        </div>
+                        <div class="feature-card">
+                            <div class="feature-icon security">
+                                <i class="fas fa-shield-alt"></i>
+                            </div>
+                            <h3 class="feature-title">Security Built-in</h3>
+                            <p class="feature-description">Helmet, CORS, rate limiting, password hashing with bcrypt,
+                                JWT authentication, and session management configured and ready to use.</p>
+                        </div>
+                        <div class="feature-card">
+                            <div class="feature-icon performance">
+                                <i class="fas fa-bolt"></i>
+                            </div>
+                            <h3 class="feature-title">Fast Development</h3>
+                            <p class="feature-description">Hot reload with tsx, ESLint, Git hooks with Husky,
+                                comprehensive npm scripts, and modern ES modules support.</p>
+                        </div>
+                        <div class="feature-card">
+                            <div class="feature-icon redis">
+                                <i class="fas fa-memory"></i>
+                            </div>
+                            <h3 class="feature-title">Redis Integration</h3>
+                            <p class="feature-description">In-memory caching and session storage with Redis and
+                                connect-redis for optimal performance and scalability.</p>
+                        </div>
+                        <div class="feature-card">
+                            <div class="feature-icon tools">
+                                <i class="fas fa-cog"></i>
+                            </div>
+                            <h3 class="feature-title">Modern Tooling</h3>
+                            <p class="feature-description">Zod validation, Axios HTTP client, EJS templating, Morgan
+                                logging, and production-ready deployment configuration.</p>
+                        </div>
+                    </div>
+                </section>
+                <section id="database" class="section fade-in-up">
+                    <h2 class="section-title">Database Options</h2>
+                    <p class="section-subtitle">Choose your preferred database setup from these professionally
+                        configured options</p>
+                    <div class="db-options">
+                        <div class="db-option">
+                            <div class="db-option-title">
+                                <i class="fas fa-layer-group"></i>
+                                Drizzle ORM + PostgreSQL
+                            </div>
+                            <p class="db-option-description">Modern, type-safe SQL toolkit with excellent TypeScript
+                                integration and lightweight performance.</p>
+                        </div>
+                        <div class="db-option">
+                            <div class="db-option-title">
+                                <i class="fas fa-leaf"></i>
+                                Mongoose ODM + MongoDB
+                            </div>
+                            <p class="db-option-description">Feature-rich MongoDB object modeling with built-in
+                                validation and schema enforcement.</p>
+                        </div>
+                        <div class="db-option">
+                            <div class="db-option-title">
+                                <i class="fas fa-gem"></i>
+                                Prisma ORM + PostgreSQL
+                            </div>
+                            <p class="db-option-description">Auto-generated type-safe client with powerful migration
+                                system and visual database studio.</p>
+                        </div>
+                        <div class="db-option">
+                            <div class="db-option-title">
+                                <i class="fas fa-database"></i>
+                                Raw PostgreSQL
+                            </div>
+                            <p class="db-option-description">Direct database connection for maximum control and
+                                performance optimization.</p>
+                        </div>
+                    </div>
+                </section>
+                <section id="security" class="section fade-in-left">
+                    <h2 class="section-title">Security & Performance</h2>
+                    <p class="section-subtitle">Production-ready security configurations and performance optimizations
+                    </p>
+                    <div class="features-grid">
+                        <div class="feature-card">
+                            <div class="feature-icon security">
+                                <i class="fas fa-helmet-safety"></i>
+                            </div>
+                            <h3 class="feature-title">Security Headers</h3>
+                            <p class="feature-description">Helmet middleware for setting various HTTP headers to help
+                                protect your app from well-known web vulnerabilities.</p>
+                        </div>
+                        <div class="feature-card">
+                            <div class="feature-icon performance">
+                                <i class="fas fa-stopwatch"></i>
+                            </div>
+                            <h3 class="feature-title">Rate Limiting</h3>
+                            <p class="feature-description">Express rate limit and slow down middleware to prevent abuse
+                                and DDoS attacks on your API endpoints.</p>
+                        </div>
+                        <div class="feature-card">
+                            <div class="feature-icon security">
+                                <i class="fas fa-user-shield"></i>
+                            </div>
+                            <h3 class="feature-title">Authentication</h3>
+                            <p class="feature-description">JWT-based authentication with bcrypt password hashing and
+                                secure session management with Redis.</p>
+                        </div>
+                        <div class="feature-card">
+                            <div class="feature-icon tools">
+                                <i class="fas fa-check-double"></i>
+                            </div>
+                            <h3 class="feature-title">Input Validation</h3>
+                            <p class="feature-description">Zod schema validation for request validation with TypeScript
+                                integration and automatic error handling.</p>
+                        </div>
+                    </div>
+                </section>
+                <section id="dev-tools" class="section fade-in-up">
+                    <h2 class="section-title">Environment Configuration</h2>
+                    <p class="section-subtitle">Environment Variables. Setup required before start and dev run</p>
+                    <div class="code-block">
+                        <div class="code-header">
+                            <span class="code-title">Environment Configuration Example</span>
+                            <button class="copy-btn" onclick="copyCode('env-example')">
+                                <i class="fas fa-copy"></i>
+                            </button>
+                        </div>
+                        <div class="code-content">
+                            <div id="env-example"><span class="comment"># Server Configuration</span>
+                                <br>
+                                PORT=3000
+                                <br>
+                                NODE_ENV=development
+                                <br>
+                                <br>
+                                <span class="comment"># Database</span>
+                                <br>
+                                DATABASE_URL=postgresql://user:password@localhost:5432/mydb
+                                <br>
+                                REDIS_URL=redis://localhost:6379
+                                <br> <br>
+                                <span class="comment"># JWT & Security</span>
+                                <br>
+                                JWT_SECRET=your-super-secret-jwt-key
+                                <br>
+                                JWT_ISSUER=http://localhost:3000
+                                <br>
+                                SESSION_SECRET=your-session-secret
+                                <br> <br>
+                                <span class="comment"># CORS</span>
+                                <br>
+                                CORS_ORIGINS="http://localhost:3000,http://localhost:5173"
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                <section id="scripts" class="section fade-in-up">
+                    <h2 class="section-title">Available Scripts</h2>
+                    <p class="section-subtitle">Comprehensive npm scripts for development, building, and deployment</p>
+                    <div class="code-block">
+                        <div class="code-header">
+                            <span class="code-title">Development Scripts</span>
+                            <button class="copy-btn" onclick="copyCode('dev-scripts')">
+                                <i class="fas fa-copy"></i>
+                            </button>
+                        </div>
+                        <div class="code-content">
+                            <div id="dev-scripts"><span class="comment"># Start development server with hot
+                                    reload</span>
+                                <br>
+                                <span class="command">npm run dev</span>
+                                <br>
+                                <span class="comment"># Build TypeScript to JavaScript</span>
+                                <br>
+                                <span class="command">npm run build</span>
+                                <br>
+                                <span class="comment"># Start server</span>
+                                <br>
+                                <span class="command">npm run start</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="code-block">
+                        <div class="code-header">
+                            <span class="code-title">Code Quality Scripts</span>
+                            <button class="copy-btn" onclick="copyCode('quality-scripts')">
+                                <i class="fas fa-copy"></i>
+                            </button>
+                        </div>
+                        <div class="code-content">
+                            <div id="quality-scripts"><span class="comment"># Run ESLint to check code quality</span>
+                                <br>
+                                <span class="command">npm run lint</span>
+                                <br>
+                                <span class="comment"># Automatically fix ESLint errors</span>
+                                <br>
+                                <span class="command">npm run lint:fix</span>
+                                <br>
+                                <span class="comment"># Run TypeScript type checking</span>
+                                <br>
+                                <span class="command">npm run typecheck</span>
+                                <br>
+                                <span class="comment"># Run complete CI pipeline</span>
+                                <br>
+                                <span class="command">npm run ci</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="code-block">
+                        <div class="code-header">
+                            <span class="code-title">Database Scripts (Drizzle/Prisma)</span>
+                            <button class="copy-btn" onclick="copyCode('db-scripts')">
+                                <i class="fas fa-copy"></i>
+                            </button>
+                        </div>
+                        <div class="code-content">
+                            <div id="db-scripts"><span class="comment"># Generate database schema and types</span>
+                                <br>
+                                <span class="command">npm run db:generate</span>
+                                <br>
+                                <span class="comment"># Apply database migrations</span>
+                                <br>
+                                <span class="command">npm run db:migrate</span>
+                                <br>
+                                <span class="comment"># Open database studio</span>
+                                <br>
+                                <span class="command">npm run db:studio</span>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                <section id="project-structure" class="section fade-in-left">
+                    <h2 class="section-title">Project Structure</h2>
+                    <p class="section-subtitle">Well-organized codebase with clear separation of concerns and scalable
+                        architecture</p>
+                    <div class="code-block">
+                        <div class="code-header">
+                            <span class="code-title">Directory Structure</span>
+                        </div>
+                        <div class="code-content">
+                            <pre id="project-structure-code">my-awesome-project/
+├── .husky/                             <span class="comment"># Git hooks automation</span>
+│   └── pre-commit                      <span class="comment"># Pre-commit linting and formatting checks</span>
+├── dist/                               <span class="comment"># Compiled TypeScript output (production build)</span>
+├── prisma/                             <span class="comment"># 🔹 Prisma ORM configuration (Prisma setup only)</span>
+│   ├── migrations/                     <span class="comment"># Database schema migration history</span>
+│   └── schema.prisma                   <span class="comment"># Database schema definition and client config</span>
+├── public/                             <span class="comment"># Static assets served directly by Express</span>
+├── src/                                <span class="comment"># Main application source code</span>
+│   ├── config/                         <span class="comment"># Application configuration and database connections</span>
+│   │   ├── dbs/                        <span class="comment"># Database connection configurations</span>
+│   │   │   ├── drizzlepgsql.ts         <span class="comment"># 🔹 Drizzle ORM + PostgreSQL setup</span>
+│   │   │   ├── mongo.ts                <span class="comment"># 🔹 MongoDB connection with Mongoose</span>
+│   │   │   ├── prismapgsql.ts          <span class="comment"># 🔹 Prisma client initialization</span>
+│   │   │   └── pgsql.ts                <span class="comment"># 🔹 Raw PostgreSQL connection pool</span>
+│   │   └── redis.ts                    <span class="comment"># Redis cache configuration</span>
+│   │   └── env.ts                      <span class="comment"># Environment variables validation and parsing</span>
+│   ├── controllers/                    <span class="comment"># Request handlers and business logic orchestration</span>
+│   │   └── userControllers.ts          <span class="comment"># User-related HTTP request controllers</span>
+│   ├── drizzle/                        <span class="comment"># 🔹 Drizzle ORM specific files (Drizzle setup only)</span>
+│   │   ├── meta/                       <span class="comment"># Migration metadata and state tracking</span>
+│   │   └── schema.ts                   <span class="comment"># Database schema definitions with TypeScript types</span>
+│   ├── lib/                            <span class="comment"># Core utility libraries and common functionality</span>
+│   │   ├── AppError.ts                 <span class="comment"># Custom application error classes</span>
+│   │   ├── callBy.ts                   <span class="comment"># Function caller identification utility</span>
+│   │   ├── callFrom.ts                 <span class="comment"># Request origin tracking utility</span>
+│   │   ├── globalErrorHandler.ts       <span class="comment"># Centralized error handling middleware</span>
+│   │   ├── HttpStatusCode.ts           <span class="comment"># HTTP status code constants and helpers</span>
+│   │   ├── InvalidateCache.ts          <span class="comment"># Cache invalidation strategies</span>
+│   │   └── notFoundHandler.ts          <span class="comment"># 404 error handling middleware</span>
+│   ├── middlewares/                    <span class="comment"># Express middleware functions</span>
+│   │   ├── auth/                       <span class="comment"># Authentication and authorization</span>
+│   │   │   └── AuthenticateUser.ts     <span class="comment"># JWT token validation and user verification</span>
+│   │   ├── log/                        <span class="comment"># Request logging and monitoring</span>
+│   │   │   └── morgan.ts               <span class="comment"># HTTP request logger configuration</span>
+│   │   └── security/                   <span class="comment"># Security-focused middleware</span>
+│   │       ├── cors.ts                 <span class="comment"># Cross-Origin Resource Sharing configuration</span>
+│   │       ├── helmet.ts               <span class="comment"># Security headers and protection</span>
+│   │       ├── ratelimiter.ts          <span class="comment"># API rate limiting and abuse prevention</span>
+│   │       ├── session.ts              <span class="comment"># Session management and storage</span>
+│   │       └── slowdowner.ts           <span class="comment"># Request throttling for DDoS protection</span>
+│   ├── model/                          <span class="comment"># 🔹 Database models (Mongoose/MongoDB only)</span>
+│   │   └── User.ts                     <span class="comment"># User schema and model definitions</span>
+│   ├── routes/                         <span class="comment"># API endpoint definitions and routing</span>
+│   │   ├── RouteManager.ts             <span class="comment"># Centralized route registration and management</span>
+│   │   └── userRoute.ts                <span class="comment"># User-related API endpoints</span>
+│   ├── services/                       <span class="comment"># Business logic and data access layer</span>
+│   │   └── userServices.ts             <span class="comment"># User-related business operations</span>
+│   ├── types/                          <span class="comment"># TypeScript type definitions and extensions</span>
+│   │   ├── express-session.d.ts        <span class="comment"># Session object type extensions</span>
+│   │   ├── express.d.ts                <span class="comment"># Express request/response type extensions</span>
+│   │   └── global.d.ts                 <span class="comment"># Global type declarations</span>
+│   ├── utils/                          <span class="comment"># Helper functions and utilities</span>
+│   │   ├── generateToken.ts            <span class="comment"># JWT token generation and management</span>
+│   │   └── getPublicIP.ts              <span class="comment"># Client IP address extraction utility</span>
+│   ├── validators/                     <span class="comment"># Input validation and sanitization</span>
+│   │   ├── requestSchema/              <span class="comment"># Request validation schemas</span>
+│   │   │   └── userSchemaValidation.ts <span class="comment"># User input validation rules</span>
+│   │   └── validate.ts                 <span class="comment"># Validation middleware and error handling</span>
+│   ├── views/                          <span class="comment"># Frontend templates and static assets</span>
+│   │   ├── assets/                     <span class="comment"># Static files (CSS, images, icons)</span>
+│   │   │   ├── favicon.ico             <span class="comment"># Website favicon</span>
+│   │   │   └── home.css                <span class="comment"># Homepage styling</span>
+│   │   └── home.ejs                    <span class="comment"># Homepage template (EJS templating)</span>
+│   └── app.ts                          <span class="comment"># Main application setup and Express configuration</span>
+├── .env                                <span class="comment"># Environment variables (keep this secure!)</span>
+├── .gitignore                          <span class="comment"># Git ignore patterns for excluded files</span>
+├── drizzle.config.ts                   <span class="comment"># 🔹 Drizzle migration and generation config</span>
+├── eslint.config.js                    <span class="comment"># ESLint code quality and style rules</span>
+├── package.json                        <span class="comment"># Project dependencies and npm scripts</span>
+├── Readme.md                           <span class="comment"># Project documentation and setup guide</span>
+└── tsconfig.json                       <span class="comment"># TypeScript compiler configuration</span></pre>
+                        </div>
+                    </div>
+                    <div class="code-block" style="margin: 2rem 0;">
+                        <div class="code-header">
+                            <span class="code-title">🔹 Database-Specific Files Legend</span>
+                        </div>
+                        <div class="code-content" style="padding: 1.5rem; line-height: 1.8; font-size: 0.95rem;">
+                            <div style="color: var(--text-primary); margin-bottom: 0.5rem;">
+                                <strong>Files marked with 🔹 are conditionally included based on your chosen database
+                                    option</strong>
+                            </div>
+                            <div style="color: var(--text-secondary); margin-bottom: 0.5rem;">
+                                • Each setup includes only the relevant database configuration files
+                            </div>
+                            <div style="color: var(--text-secondary);">
+                                • All other files remain consistent across all database choices
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                <section id="tech-stack" class="section fade-in-up">
+                    <h2 class="section-title">Technology Stack</h2>
+                    <p class="section-subtitle">Built with modern, battle-tested technologies and industry best
+                        practices</p>
+                    <div class="features-grid">
+                        <div style="grid-column: 1 / -1;">
+                            <div style="display: flex; flex-wrap: wrap; gap: 0.5rem; justify-content: center;">
+                                <span class="badge"><i class="fab fa-js-square"></i> TypeScript</span>
+                                <span class="badge"><i class="fab fa-node-js"></i> Node.js</span>
+                                <span class="badge"><i class="fas fa-server"></i> Express.js</span>
+                                <span class="badge"><i class="fas fa-code"></i> ESLint</span>
+                                <span class="badge"><i class="fas fa-shield-alt"></i> Helmet</span>
+                                <span class="badge"><i class="fas fa-globe"></i> CORS</span>
+                                <span class="badge"><i class="fas fa-memory"></i> Redis</span>
+                                <span class="badge"><i class="fas fa-key"></i> JWT</span>
+                                <span class="badge"><i class="fas fa-lock"></i> Bcrypt</span>
+                                <span class="badge"><i class="fas fa-check-circle"></i> Zod</span>
+                                <span class="badge"><i class="fas fa-file-alt"></i> Morgan</span>
+                                <span class="badge"><i class="fas fa-code"></i> EJS</span>
+                                <span class="badge"><i class="fas fa-git-alt"></i> Husky</span>
+                                <span class="badge"><i class="fas fa-tachometer-alt"></i> Rate Limiter</span>
+                                <span class="badge"><i class="fas fa-database"></i> PostgreSQL</span>
+                                <span class="badge"><i class="fas fa-leaf"></i> MongoDB</span>
+                                <span class="badge"><i class="fas fa-layer-group"></i> Drizzle ORM</span>
+                                <span class="badge"><i class="fas fa-gem"></i> Prisma</span>
+                                <span class="badge"><i class="fas fa-sitemap"></i> Mongoose</span>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                <section id="links" class="section fade-in-up">
+                    <h2 class="section-title">Links & Resources</h2>
+                    <p class="section-subtitle">Useful links for documentation, support, and community</p>
+                    <div class="features-grid">
+                        <div class="feature-card">
+                            <div class="feature-icon tools">
+                                <i class="fab fa-npm"></i>
+                            </div>
+                            <h3 class="feature-title">NPM Package</h3>
+                            <p class="feature-description">Official npm package with installation instructions and
+                                version history.</p>
+                            <a href="https://www.npmjs.com/package/create-tpexpress" target="_blank"
+                                class="btn btn-secondary" style="margin-top: 1rem;">Visit NPM</a>
+                        </div>
+                        <div class="feature-card">
+                            <div class="feature-icon database">
+                                <i class="fab fa-github"></i>
+                            </div>
+                            <h3 class="feature-title">GitHub Repository</h3>
+                            <p class="feature-description">Source code, issues, documentation, and community
+                                contributions.</p>
+                            <a href="https://github.com/imvikashkk/create-tpexpress" target="_blank"
+                                class="btn btn-secondary" style="margin-top: 1rem;">View Source</a>
+                        </div>
+                    </div>
+                </section>
+                <div id="stats" class="section stats-section">
+                    <h2 class="section-title">Stats</h2>
+                    <p class="section-subtitle">Stats of Downloads, Typescript, Built-in packages, Database-options</p>
+                    <div class="stats fade-in-up">
+                        <div class="stat">
+                            <div class="stat-number">4</div>
+                            <div class="stat-label">Database Options</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-number">20+</div>
+                            <div class="stat-label">Built-in Packages</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-number">100%</div>
+                            <div class="stat-label">TypeScript</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-number">1k+</div>
+                            <div class="stat-label">Downloads</div>
+                        </div>
+                    </div>
+                </div>
+                <section id="contributing" class="section fade-in-left">
+                    <h2 class="section-title">Contributing</h2>
+                    <p class="section-subtitle">Help make TpExpress better for everyone</p>
+                    <div class="code-block">
+                        <div class="code-header">
+                            <span class="code-title">How to Contribute</span>
+                            <button class="copy-btn" onclick="copyCode('contribute-steps')">
+                                <i class="fas fa-copy"></i>
+                            </button>
+                        </div>
+                        <div class="code-content">
+                            <div id="contribute-steps"><span class="comment"># 1. Fork the repository</span>
+                                <br />
+                                git clone https://github.com/imvikashkk/create-tpexpress.git
+                                <br />
+                                <span class="comment"># 2. Create your feature branch</span>
+                                <br />
+                                git checkout -b feature/amazing-feature
+                                <br />
+                                <span class="comment"># 3. Commit your changes</span>
+                                <br />
+                                git commit -m 'Add some amazing feature'
+                                <br />
+                                <span class="comment"># 4. Push to the branch</span>
+                                <br />
+                                git push origin feature/amazing-feature
+                                <br />
+                                <span class="comment"># 5. Open a Pull Request</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="text-align: center; margin: 3rem 0;">
+                        <h3 style="color: var(--text-primary); margin-bottom: 1rem;">Built with ❤️ by Vikash Kumar
+                            Khunte</h3>
+                        <p style="color: var(--text-secondary); margin-bottom: 2rem;">Making TypeScript + Express
+                            development faster and more enjoyable</p>
+                        <div style="display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap;">
+                            <a href="https://github.com/imvikashkk" target="_blank" class="btn btn-secondary">
+                                <i class="fab fa-github"></i>
+                                Follow on GitHub
+                            </a>
+                            <a href="https://www.npmjs.com/package/create-tpexpress" target="_blank"
+                                class="btn btn-primary">
+                                <i class="fas fa-star"></i>
+                                Star the Project
+                            </a>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
+    <script>
+        let mobileMenuOpen = false;
+        function toggleTheme() {
+            const body = document.body;
+            const icon = document.getElementById('theme-icon');
+            const currentTheme = body.getAttribute('data-theme');
+            if (currentTheme === 'dark') {
+                body.removeAttribute('data-theme');
+                icon.className = 'fas fa-moon';
+                localStorage.setItem('theme', 'light');
+            } else {
+                body.setAttribute('data-theme', 'dark');
+                icon.className = 'fas fa-sun';
+                localStorage.setItem('theme', 'dark');
+            }
+        }
+        function toggleMenu() {
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.querySelector('.overlay');
+            mobileMenuOpen = !mobileMenuOpen;
+            if (mobileMenuOpen) {
+                sidebar.classList.add('show');
+                overlay.classList.add('show');
+                document.body.style.overflow = 'hidden';
+            } else {
+                sidebar.classList.remove('show');
+                overlay.classList.remove('show');
+                document.body.style.overflow = '';
+            }
+        }
+        function closeMobileMenu() {
+            if (window.innerWidth <= 1024 && mobileMenuOpen) {
+                toggleMenu();
+            }
+        }
+        function initTheme() {
+            const savedTheme = localStorage.getItem('theme');
+            const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            const icon = document.getElementById('theme-icon');
+            if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
+                document.body.setAttribute('data-theme', 'dark');
+                icon.className = 'fas fa-sun';
+            } else {
+                icon.className = 'fas fa-moon';
+            }
+        }
+
+        function cleanText(text) {
+            // 1. Comments aur <br> tags ko hatao.
+            // `#` se shuru hone wali lines ko poora hata dega.
+            // `<br>` aur `<br/>` tags ko hata dega.
+            const withoutCommentsAndBr = text
+                .split('\n')
+                .filter(line => !line.trim().startsWith('#'))
+                .join('\n')
+                .replace(/<br\s*\/?>/g, '');
+
+            // 2. Extra spaces aur tabs ko hatao aur har line ko trim karo.
+            // Har line se aage-peeche ke spaces hatao.
+            // Multiple spaces ko single space se replace karo.
+            const cleanedText = withoutCommentsAndBr
+                .split('\n')
+                .map(line => line.trim().replace(/\s+/g, ' '))
+                .filter(line => line !== '') // Khaali lines ko hatao
+                .join('\n');
+
+            return cleanedText;
+        }
+        function copyCode(elementId) {
+            const element = document.getElementById(elementId);
+            const text = cleanText(element.textContent);
+            navigator.clipboard.writeText(text).then(() => {
+                const btn = event.target.closest('.copy-btn');
+                const icon = btn.querySelector('i');
+                const originalClass = icon.className;
+                icon.className = 'fas fa-check';
+                btn.style.color = 'var(--success)';
+                setTimeout(() => {
+                    icon.className = originalClass;
+                    btn.style.color = '';
+                }, 2000);
+            }).catch(err => {
+                const textArea = document.createElement('textarea');
+                textArea.value = text;
+                document.body.appendChild(textArea);
+                textArea.select();
+                try {
+                    document.execCommand('copy');
+                    const btn = event.target.closest('.copy-btn');
+                    const icon = btn.querySelector('i');
+                    const originalClass = icon.className;
+                    icon.className = 'fas fa-check';
+                    btn.style.color = 'var(--success)';
+                    setTimeout(() => {
+                        icon.className = originalClass;
+                        btn.style.color = '';
+                    }, 2000);
+                } catch (err) {
+                    // console.error('Fallback: Unable to copy', err);
+                }
+                document.body.removeChild(textArea);
+            });
+        }
+
+        function handleResize() {
+            if (window.innerWidth > 1024) {
+                const sidebar = document.getElementById('sidebar');
+                const overlay = document.querySelector('.overlay');
+                const main = document.getElementById('main');
+                sidebar.classList.remove('show', 'mobile-hidden');
+                overlay.classList.remove('show');
+                main.classList.remove('expanded');
+                document.body.style.overflow = '';
+                mobileMenuOpen = false;
+            } else {
+                const sidebar = document.getElementById('sidebar');
+                const main = document.getElementById('main');
+                if (!mobileMenuOpen) {
+                    sidebar.classList.remove('show');
+                }
+                main.classList.add('expanded');
+            }
+        }
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+        function updateActiveNav() {
+            const sections = document.querySelectorAll('section[id], div[id]');
+            const navLinks = document.querySelectorAll('.nav-link');
+            let current = 'introduction';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop - 120;
+                const sectionHeight = section.offsetHeight;
+                if (window.scrollY >= sectionTop && window.scrollY < sectionTop + sectionHeight) {
+                    current = section.getAttribute('id');
+                }
+            });
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === `#${current}`) {
+                    link.classList.add('active');
+                }
+            });
+        }
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0) translateX(0)';
+                }
+            });
+        }, observerOptions);
+        document.addEventListener('DOMContentLoaded', () => {
+            initTheme();
+            handleResize();
+            document.querySelectorAll('.fade-in-up, .fade-in-left').forEach(el => {
+                el.style.opacity = '0';
+                if (el.classList.contains('fade-in-up')) {
+                    el.style.transform = 'translateY(30px)';
+                } else {
+                    el.style.transform = 'translateX(-30px)';
+                }
+                el.style.transition = 'opacity 0.8s ease, transform 0.8s ease';
+                observer.observe(el);
+            });
+        });
+        window.addEventListener('scroll', updateActiveNav);
+        window.addEventListener('resize', handleResize);
+        console.log(`
+🚀 TpExpress Documentation
+💡 Built with modern web technologies
+⚡ TypeScript + Express + Node.js boilerplate
+📦 https://www.npmjs.com/package/create-tpexpress
+`);
+    </script>
+</body>
+
+</html>
