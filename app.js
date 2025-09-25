@@ -397,26 +397,6 @@ ${cdCommand ? `  ${colors.yellow}${cdCommand}${colors.reset}` : ''}
     colors.dim
   }# Run production build${colors.reset}
 
-${colors.cyan}📚 Available Scripts:${colors.reset}
-  ${colors.green}npm run dev${colors.reset}         ${
-    colors.dim
-  }Development with hot reload${colors.reset}
-  ${colors.green}npm run build${colors.reset}       ${
-    colors.dim
-  }Production build${colors.reset}  
-  ${colors.green}npm run start${colors.reset}       ${
-    colors.dim
-  }Run production server${colors.reset}
-  ${colors.green}npm run lint${colors.reset}        ${
-    colors.dim
-  }Check code style${colors.reset}
-  ${colors.green}npm run format${colors.reset}      ${colors.dim}Format code${
-    colors.reset
-  }
-  ${colors.green}npm run check${colors.reset}       ${
-    colors.dim
-  }Run all checks${colors.reset}
-
 ${colors.magenta}🚀 Happy coding!${colors.reset}
   `);
 }

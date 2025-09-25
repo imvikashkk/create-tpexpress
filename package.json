@@ -1,6 +1,6 @@
 {
   "name": "create-tpexpress",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "The fastest way to scaffold a modern TypeScript + Node.js + Express.js project with ESLint, TSX and more! Visit: https://tpexpress.vercel.app",
   "main": "app.js",
   "type": "module",
