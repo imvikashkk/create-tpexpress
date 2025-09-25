@@ -4,8 +4,9 @@ templates/*/node_modules
 templates/*/.git
 
 .git
+.husky
 .vscode
 docs
+node_modules
 .gitignore
 package-lock.json
-node_modules
