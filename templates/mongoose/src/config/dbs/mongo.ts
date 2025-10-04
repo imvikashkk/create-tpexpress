@@ -1,37 +1,50 @@
-import mongoose from "mongoose";
-import env from "@/config/env.js";
+import mongoose from 'mongoose';
+import env from '@/config/env.js';
 
-// Define a type for the global object to hold the Mongoose connection.
+// Global singleton for Mongoose
 const globalForMongoose = global as unknown as {
-  mongoose: typeof mongoose | undefined;
+  mongooseInstance: typeof mongoose | undefined;
+  dbConnectPromise: Promise<void> | undefined;
 };
 
-// Check if a Mongoose connection has already been established.
-// If it has, reuse the existing instance.
-const db = globalForMongoose.mongoose ?? mongoose;
+// Use existing Mongoose instance if available
+const db = globalForMongoose.mongooseInstance ?? mongoose;
 
-// In development, save the instance to the global object to prevent
-// connection leaks during hot-reloading.
-if (env.NODE_ENV !== "production") {
-  globalForMongoose.mongoose = db;
+// In development, save instance to global to prevent hot reload issues
+if (env.NODE_ENV !== 'production') {
+  globalForMongoose.mongooseInstance = db;
 }
 
-async function mongooseConnect() {
-  try {
-    // Mongoose's connect method is designed to be called once.
-    console.log(env.DATABASE_URL);
-    await db.connect(env.DATABASE_URL, {
-      serverSelectionTimeoutMS: 5000,
-    });
-    console.info("✅ Database connection successful!");
-  } catch (error) {
-    console.error("❌ Failed to connect to the database:", error);
-    process.exit(1);
+// ConnectDB function (race-condition safe)
+const connectDB = async () => {
+  if (db.connection.readyState === 1) {
+    console.info(`ℹ️ MongoDB already connected PID:${process.pid}`);
+    return;
   }
-}
 
-// Export the mongoose connection instance
+  // Avoid race conditions
+  if (globalForMongoose.dbConnectPromise) {
+    await globalForMongoose.dbConnectPromise;
+    return;
+  }
+
+  globalForMongoose.dbConnectPromise = (async () => {
+    try {
+      await db.connect(env.DATABASE_URL, {
+        serverSelectionTimeoutMS: 5000,
+      });
+      console.log(`✅ Database connected successfully PID:${process.pid}`);
+    } catch (error) {
+      console.error(`❌ Database connection Error PID:${process.pid}`);
+      console.error(error);
+      process.exit(1);
+    } finally {
+      globalForMongoose.dbConnectPromise = undefined;
+    }
+  })();
+
+  await globalForMongoose.dbConnectPromise;
+};
+
 export default db;
-
-// Export the connection check function
-export { mongooseConnect };
+export { connectDB };

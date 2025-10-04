@@ -1,8 +1,8 @@
-import { Schema, Document, Model } from "mongoose";
-import bcrypt, { hash } from "bcrypt";
-import AppError from "@/lib/AppError.js";
-import db from "@/config/dbs/mongo.js";
-import env from "@/config/env.js";
+import { Schema, Document, Model } from 'mongoose';
+import bcrypt, { hash } from 'bcrypt';
+import AppError from '@/lib/AppError.js';
+import db from '@/config/dbs/mongo.js';
+import env from '@/config/env.js';
 
 interface UserType {
   id: string;
@@ -32,7 +32,7 @@ const UserSchema = new Schema<IUser, IUserModel>(
   {
     fname: {
       type: String,
-      required: [true, "First name is required."],
+      required: [true, 'First name is required.'],
       trim: true,
     },
     lname: {
@@ -42,20 +42,20 @@ const UserSchema = new Schema<IUser, IUserModel>(
     },
     email: {
       type: String,
-      required: [true, "Email address is required."],
+      required: [true, 'Email address is required.'],
       trim: true,
       lowercase: true,
       validate: {
         validator: (v: string) => {
           return /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(v);
         },
-        message: "Please enter a valid email address!",
+        message: 'Please enter a valid email address!',
       },
     },
     password: {
       type: String,
-      required: [true, "Password is required."],
-      minlength: [8, "Password must be at least 8 characters long."],
+      required: [true, 'Password is required.'],
+      minlength: [8, 'Password must be at least 8 characters long.'],
       select: false,
     },
   },
@@ -88,14 +88,14 @@ UserSchema.statics.findUserByEmailAndAuthenticate = async function (
   email: string,
   userpassword: string
 ) {
-  const user = await this.findOne({ email }).select("+password");
+  const user = await this.findOne({ email }).select('+password');
 
   if (!user) {
     throw new AppError({
       status: 401,
-      type: "Unauthorized",
-      message: "Invalid credentials!",
-      highlight: "User not found!",
+      type: 'Unauthorized',
+      message: 'Invalid credentials!',
+      highlight: 'User not found!',
     });
   }
 
@@ -120,8 +120,8 @@ UserSchema.statics.findUserByEmailAndAuthenticate = async function (
 
 /* --- Middleware --- */
 // The `this` context is correctly typed as `IUser`
-UserSchema.pre("save", async function (this: IUser, next) {
-  if (!this.isModified("password")) {
+UserSchema.pre('save', async function (this: IUser, next) {
+  if (!this.isModified('password')) {
     return next();
   }
   try {
@@ -131,9 +131,9 @@ UserSchema.pre("save", async function (this: IUser, next) {
   } catch (err: unknown) {
     return next(
       new AppError({
-        type: "InternalError",
-        message: "Failed to hash password!",
-        highlight: "PasswordHashing",
+        type: 'InternalError',
+        message: 'Failed to hash password!',
+        highlight: 'PasswordHashing',
         details: err,
         status: 500,
       })
@@ -142,6 +142,6 @@ UserSchema.pre("save", async function (this: IUser, next) {
 });
 
 /* The model() function is called on the singleton connection object. */
-const User = db.model<IUser, IUserModel>("User", UserSchema);
+const User = db.model<IUser, IUserModel>('User', UserSchema);
 
 export default User;
