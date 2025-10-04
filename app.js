@@ -48,7 +48,7 @@ function checkNodeVersion() {
 
   if (majorVersion < 22) {
     log(`Node.js version ${nodeVersion} is not supported.`, 'red', '❌ ');
-    log(`Required: Node.js v22.19.0 or higher`, 'yellow', '📋 ');
+    log(`Required: Node.js v22 or higher`, 'yellow', '📋 ');
     log(`Please upgrade Node.js: https://nodejs.org/`, 'blue', '📥 ');
     process.exit(1);
   }

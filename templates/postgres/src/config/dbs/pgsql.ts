@@ -1,40 +1,26 @@
-import { Client } from "pg";
-import env from "@/config/env.js";
+import { Pool } from 'pg';
+import env from '@/config/env.js';
 
-// Define a type for the global object to hold the single client instance
+// Create Connection Pool
+const pool = new Pool({
+  connectionString: env.DATABASE_URL,
+});
+
+// Global singleton to prevent multiple pools in dev hot-reloading
 const globalForPostgres = global as unknown as {
-  postgresClient: Client | undefined;
+  postgresPool: Pool | undefined;
+  dbConnectPromise: Promise<void> | undefined;
 };
 
-// Check if a client instance already exists, otherwise create a new one
-const client =
-  globalForPostgres.postgresClient ??
-  new Client({
-    connectionString: env.DATABASE_URL,
-  });
-
-// In development, save the instance to the global object to prevent
-// connection leaks during hot-reloading.
-if (process.env.NODE_ENV !== "production") {
-  globalForPostgres.postgresClient = client;
+// Use existing pool if available
+const db = globalForPostgres.postgresPool ?? pool;
+if (process.env.NODE_ENV !== 'production') {
+  globalForPostgres.postgresPool = db;
 }
 
-const connectDB = async () => {
-  try {
-    await client.connect();
-    console.info("✅ PostgreSQL connected successfully!");
-
-    // Execute the schema setup queries
-    await client.query(preSetupQueryString);
-    console.info("✅ Database schema setup complete!");
-  } catch (error) {
-    console.error("❌ PostgreSQL connection error:", error);
-    process.exit(1);
-  }
-};
-
+// Pre-setup SQL (tables + triggers)
 const preSetupQueryString = `
--- Reusable function to set the updated_at timestamp
+-- Function to auto-update updated_at
 CREATE OR REPLACE FUNCTION set_updated_at_timestamp()
 RETURNS TRIGGER AS $$
 BEGIN
@@ -43,9 +29,7 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
---------------------------------------------------------------------------------
-
--- Create the users table
+-- Users table
 CREATE TABLE IF NOT EXISTS users (
   id SERIAL NOT NULL PRIMARY KEY,
   fname VARCHAR(100) NOT NULL,
@@ -55,15 +39,12 @@ CREATE TABLE IF NOT EXISTS users (
   updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
 
--- Trigger for the users table
 CREATE OR REPLACE TRIGGER users_updated_at_trigger
 BEFORE UPDATE ON users
 FOR EACH ROW
 EXECUTE FUNCTION set_updated_at_timestamp();
 
---------------------------------------------------------------------------------
-
--- Create the credentials table
+-- Credentials table
 CREATE TABLE IF NOT EXISTS credentials (
   id SERIAL NOT NULL PRIMARY KEY,
   user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE ON UPDATE CASCADE,
@@ -72,12 +53,54 @@ CREATE TABLE IF NOT EXISTS credentials (
   updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
 
--- Trigger for the credentials table
 CREATE OR REPLACE TRIGGER credentials_updated_at_trigger
 BEFORE UPDATE ON credentials
 FOR EACH ROW
 EXECUTE FUNCTION set_updated_at_timestamp();
 `;
 
-export default client;
+// Flag to track connection
+let isConnected = false;
+
+// ConnectDB function (race-condition safe)
+const connectDB = async () => {
+  if (isConnected) {
+    console.info(`ℹ️ Database already connected PID:${process.pid}`);
+    return;
+  }
+
+  // Avoid parallel calls race
+  if (globalForPostgres.dbConnectPromise) {
+    await globalForPostgres.dbConnectPromise;
+    return;
+  }
+
+  globalForPostgres.dbConnectPromise = (async () => {
+    try {
+      const client = await db.connect();
+      console.log(`✅ Database connected successfully PID:${process.pid}`);
+
+      // Run pre-setup queries only once
+      await client.query(preSetupQueryString);
+      client.release();
+
+      isConnected = true;
+
+      // Log pool status
+      // console.log(
+      //   `🔹 Pool status → total: ${db.totalCount}, idle: ${db.idleCount}, waiting: ${db.waitingCount}`
+      // );
+    } catch (error) {
+      console.error(`❌ Database connection Error PID:${process.pid}`);
+      console.error(error);
+      process.exit(1);
+    } finally {
+      globalForPostgres.dbConnectPromise = undefined;
+    }
+  })();
+
+  await globalForPostgres.dbConnectPromise;
+};
+
+export default db;
 export { connectDB };

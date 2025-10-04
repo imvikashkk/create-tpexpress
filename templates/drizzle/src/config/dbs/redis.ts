@@ -1,13 +1,13 @@
-import { createClient, RedisClientType } from "redis";
-import env from "@/config/env.js";
+import { createClient, RedisClientType } from 'redis';
+import env from '@/config/env.js';
 
-// Define a type for the global object to hold the single client instance
+// Global type for development singleton
 const globalForRedis = global as unknown as {
   redisClient: RedisClientType | undefined;
 };
 
-// Check if a client instance already exists, otherwise create a new one
-const redisClient =
+// Create Redis client if not already created
+const redisClient: RedisClientType =
   globalForRedis.redisClient ??
   createClient({
     url: env.REDIS_URL,
@@ -16,21 +16,31 @@ const redisClient =
     },
   });
 
-// In development, save the instance to the global object to prevent
-// connection leaks during hot-reloading.
-if (process.env.NODE_ENV !== "production") {
+// Save to global in development to prevent multiple connections on hot reload
+if (process.env.NODE_ENV !== 'production') {
   globalForRedis.redisClient = redisClient;
 }
 
-// Connection
-redisClient
-  .connect()
-  .then(() => {
-    console.info("✅ Successfully connected to Redis!");
-  })
-  .catch((error: unknown) => {
-    console.error("❌ Redis Connection Error:", error);
+/**
+ * Connect Redis safely.
+ * - Avoid multiple connect() calls if already connected
+ * - Logs PID for debugging
+ */
+const connectRedis = async (): Promise<'success'> => {
+  try {
+    if (!redisClient.isOpen) {
+      await redisClient.connect();
+      console.info(`✅ Redis successfully connected PID:${process.pid}`);
+    } else {
+      console.info(`ℹ️ Redis already connected PID:${process.pid}`);
+    }
+    return 'success';
+  } catch (error) {
+    console.error(`❌ Redis connection Error PID:${process.pid}`);
+    console.error(error);
     process.exit(1);
-  });
+  }
+};
 
+export { connectRedis };
 export default redisClient;

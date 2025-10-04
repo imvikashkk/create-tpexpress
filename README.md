@@ -133,10 +133,10 @@ npm run start
 
 ## 📋 System Requirements
 
-| Requirement | Version      |
-| ----------- | ------------ |
-| **Node.js** | `v22.19.0` + |
-| **npm**     | `10.9.3` +   |
+| Requirement | Version     |
+| ----------- | ----------- |
+| **Node.js** | `v22.0.0` + |
+| **npm**     | `10.0.0` +  |
 
 ---
 
@@ -214,7 +214,8 @@ my-awesome-project/
 │   │   │   ├── favicon.ico             # Website favicon
 │   │   │   └── home.css                # Homepage styling
 │   │   └── home.ejs                    # Homepage template (EJS templating)
-│   └── app.ts                          # Main application setup and Express configuration
+│   ├── app.ts                          # Application setup and Express configuration
+│   └── index.ts                        # Main application setup and Clusterization and Start Point
 ├── .env                                # Environment variables (keep this secure!)
 ├── .gitignore                          # Git ignore patterns for excluded files
 ├── drizzle.config.ts                   # 🔹 Drizzle migration and generation config
