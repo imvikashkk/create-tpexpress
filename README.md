@@ -35,14 +35,14 @@ _Production-ready boilerplate with batteries included_ 🚀
 ### Create a new project
 
 ```bash
-    npm create tpexpress
+    npm create tpexpress@latest
 
 ```
 
 OR
 
 ```bash
-npm create tpexpress my-awesome-project
+npm create tpexpress@latest my-awesome-project
 cd my-awesome-project
 ```
 
