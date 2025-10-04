@@ -1,6 +1,6 @@
 {
   "name": "create-tpexpress",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "The fastest way to scaffold a modern TypeScript + Node.js + Express.js project with ESLint, TSX and more! Visit: https://tpexpress.vercel.app",
   "main": "app.js",
   "type": "module",
@@ -44,13 +44,11 @@
   "files": [
     "app.js",
     "templates/",
+    "scripts/",
     "README.md",
     "LICENSE"
   ],
   "devDependencies": {
     "husky": "^9.1.7"
-  },
-  "dependencies": {
-    "create-typeexpress5": "^1.0.1"
   }
 }
